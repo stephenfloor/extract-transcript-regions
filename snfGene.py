@@ -1,10 +1,7 @@
 # class to create genes out of lines in knowngene file 
 
-# TODO: 
-
-# pretty sure 5' UTR length math is wrong for - strand at least
-# double check region parsing 
-# make method for BED format output 
+# Stephen N. Floor
+# 8 October 2014 
 
 class snfGene: 
     def __init__(self):
