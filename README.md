@@ -17,5 +17,11 @@ This program takes a knownGene.txt file for some genome from the UCSC genome bro
 
 Invocation:
   python knowngenes_to_transcript_regions.py knownGenes.txt output_basename
+
+Input: 
+  UCSC knownGene.txt
+  
+Output: 
+  nine region files in .bed format 
   
 This is built on the snfGene class, which constructs gene objects from a knownGene file and computes metadata about the genes during parsing of the knownGene file. 
