@@ -31,4 +31,6 @@ This is built on the snfGene class, which constructs gene objects from a knownGe
 
 Notes: 
 
-  - regions may have multiple lines in the output (i.e. a 5' UTR with 3 exons will have 3 lines of output, with the same name)
+  - output is now in blockBedFormat by default (i.e. all exons dumped onto one line using block columns at the end) 
+  - to change output format, change the value of useBlocks in knowngenes_to_transcript_regions.py 
+
