@@ -9,7 +9,7 @@
 # convert UCSC gene names to refseq?
 
 import sys, os
-from snfGene import * 
+from UCSCKnownGene import * 
 
 print " ---------------------------------"
 print "| Extract Regions from knownGenes |"
@@ -48,7 +48,7 @@ with open(sys.argv[1]) as knownGenesFile, open(utr5FName, "w") as utr5File, open
         open(noncodingExonFName, "w") as noncodingExonFile, open(noncodingIntronFName, "w") as noncodingIntronFile:
 
     for line in knownGenesFile:
-        # all of the knowngenes parsing and metadata construction is done inside snfGene.py, especially the createGene method 
+        # all of the knowngenes parsing and metadata construction is done inside UCSCKnownGene.py, especially the createGene method 
         gene = createGene(line)
         genesRead += 1
 

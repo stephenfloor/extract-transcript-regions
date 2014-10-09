@@ -3,7 +3,7 @@
 # Stephen N. Floor
 # 8 October 2014 
 
-class snfGene: 
+class UCSCKnownGene: 
     def __init__(self):
         #properties defined in UCSC knowngenes 
         self.name = '' 
@@ -42,7 +42,7 @@ class snfGene:
 #this function returns a list of BED-formatted strings for the feature passed as region 
     def bedFormat(self, region="exons"):
         if (not self.coding and (region == "5utr" or region == "cds" or region == "3utr")):
-            print "snfGene bedFormat error: noncoding transcripts do not have 5utr/cds/3utr"
+            print "UCSCKnownGene bedFormat error: noncoding transcripts do not have 5utr/cds/3utr"
             return []
 
         returnVal = []
@@ -67,7 +67,7 @@ class snfGene:
             for chunk in self.intronicRegions:
                 returnVal.append("%s\t%d\t%d\t%s\t0\t%d\t%d\t0" % (chunk[0], chunk[1], chunk[2], chunk[3]+"_intron",chunk[1],chunk[2]))
         else:
-            print "snfGene bedFormat error: currently only regions 5utr/cds/3utr/exons/introns are supported"
+            print "UCSCKnownGene bedFormat error: currently only regions 5utr/cds/3utr/exons/introns are supported"
             
 
         return returnVal
@@ -80,7 +80,7 @@ class snfGene:
     #    name            chrom   strand  txStart txEnd   cdsStart cdsEnd exonCt  exonStarts              exonEnds                proteinID  alignID 
 
 def createGene(knownGeneLineString):
-    foo = snfGene()
+    foo = UCSCKnownGene()
     line = knownGeneLineString.split()
 
     # -- read in knownGene fields -- 
@@ -149,7 +149,7 @@ def createGene(knownGeneLineString):
                     foo.utr3.append((foo.chrom, foo.exonStarts[i], foo.exonEnds[i], foo.name))
                     foo.utr3Len += foo.exonEnds[i] - foo.exonStarts[i]
                 else: 
-                    print "Thar be dragons - snfGene createGene + stranded gene region parsing" 
+                    print "Thar be dragons - UCSCKnownGene createGene + stranded gene region parsing" 
             #else: 
             #    print "noncoding + strand transcript" 
                 
@@ -212,7 +212,7 @@ def createGene(knownGeneLineString):
                     foo.utr5.append((foo.chrom, foo.exonStarts[i], foo.exonEnds[i], foo.name))
                     foo.utr5Len += foo.exonEnds[i] - foo.exonStarts[i]
                 else: 
-                    print "Thar be dragons - snfGene createGene - stranded gene region parsing" 
+                    print "Thar be dragons - UCSCKnownGene createGene - stranded gene region parsing" 
                     
             #else: 
             #    print "- strand noncoding transcript"
@@ -228,7 +228,7 @@ def createGene(knownGeneLineString):
                 foo.intronicRegionsLen += foo.exonStarts[i+1] - foo.exonEnds[i] 
                 
     else:
-        print "Thar be dragons - snfGene createGene strand does not match + or -"
+        print "Thar be dragons - UCSCKnownGene createGene strand does not match + or -"
 	
     return foo 
 
