@@ -7,7 +7,6 @@
 # TODO: 
 
 # convert UCSC gene names to refseq?
-# current bedFormat output does not have strand column -> error 
 
 import sys, os
 from UCSCKnownGene import * 
