@@ -28,3 +28,7 @@ Output:
   nine region files in .bed format 
   
 This is built on the snfGene class, which constructs gene objects from a knownGene file and computes metadata about the genes during parsing of the knownGene file. 
+
+Notes: 
+
+  - regions may have multiple lines in the output (i.e. a 5' UTR with 3 exons will have 3 lines of output, with the same name)
