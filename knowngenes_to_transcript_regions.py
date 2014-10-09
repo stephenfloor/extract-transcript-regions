@@ -7,6 +7,7 @@
 # TODO: 
 
 # convert UCSC gene names to refseq?
+# current bedFormat output does not have strand column -> error 
 
 import sys, os
 from UCSCKnownGene import * 
@@ -34,6 +35,10 @@ noncodingIntronFName = sys.argv[2] + "_noncodingintrons.bed"
 #keep track of where we are 
 genesRead = 0
 
+# parameters that should be passed via the cmd line
+useBlocks = True 
+
+
 #terminate if output files exist
 
 if os.path.exists(utr5FName) or os.path.exists(cdsFName) or os.path.exists(utr3FName) or os.path.exists(exonFName) or os.path.exists(intronFName) \
@@ -52,32 +57,57 @@ with open(sys.argv[1]) as knownGenesFile, open(utr5FName, "w") as utr5File, open
         gene = createGene(line)
         genesRead += 1
 
-        if(gene.coding): 
-            for entry in gene.bedFormat(region="5utr"):
-                utr5File.write(entry + "\n")
-            for entry in gene.bedFormat(region="cds"):
-                cdsFile.write(entry + "\n")
-            for entry in gene.bedFormat(region="3utr"):
-                utr3File.write(entry + "\n")
+        if (useBlocks): # output all region primitives on the same line by specifying nBlocks and lists inside the BED output 
+            if(gene.coding): 
+                #blockBedFormat is one line by definition 
+                if (gene.utr5Len > 0): utr5File.write(gene.blockBedFormat(region="5utr") + "\n")
+                if (gene.cdsLen > 0): cdsFile.write(gene.blockBedFormat(region="cds") + "\n")
+                if (gene.utr3Len > 0): utr3File.write(gene.blockBedFormat(region="3utr") + "\n")
+                
+                if (gene.exonsLen > 0): 
+                    exonFile.write(gene.blockBedFormat(region="exons") + "\n")
+                    codingExonFile.write(gene.blockBedFormat(region="exons") + "\n")
+                
+                if (gene.intronsLen > 0):
+                    intronFile.write(gene.blockBedFormat(region="introns") + "\n")
+                    codingIntronFile.write(gene.blockBedFormat(region="introns") + "\n")
+            
+            else: # noncoding transcripts just have exons and introns 
+                if (gene.exonsLen > 0):
+                    exonFile.write(gene.blockBedFormat(region="exons") + "\n")
+                    noncodingExonFile.write(gene.blockBedFormat(region="exons") + "\n")
+                
+                if (gene.intronsLen > 0):
+                    intronFile.write(gene.blockBedFormat(region="introns") + "\n")
+                    noncodingIntronFile.write(gene.blockBedFormat(region="introns") + "\n")
 
-            for entry in gene.bedFormat(region="exons"):
-                exonFile.write(entry + "\n")
-                codingExonFile.write(entry + "\n")
-            
-            for entry in gene.bedFormat(region="introns"):
-                intronFile.write(entry + "\n")
-                codingIntronFile.write(entry + "\n")
-            
-        else: # noncoding transcripts just have exons and introns 
-            for entry in gene.bedFormat(region="exons"):
-                exonFile.write(entry + "\n")
-                noncodingExonFile.write(entry + "\n")
-            
-            for entry in gene.bedFormat(region="introns"):
-                intronFile.write(entry + "\n")
-                noncodingIntronFile.write(entry + "\n")
+        else: # output one line per region primitive instead of combining regions via blocks 
+            if(gene.coding): 
+                for entry in gene.bedFormat(region="5utr"):
+                    utr5File.write(entry + "\n")
+                for entry in gene.bedFormat(region="cds"):
+                    cdsFile.write(entry + "\n")
+                for entry in gene.bedFormat(region="3utr"):
+                    utr3File.write(entry + "\n")
 
-        if (not genesRead % 5000):
+                for entry in gene.bedFormat(region="exons"):
+                    exonFile.write(entry + "\n")
+                    codingExonFile.write(entry + "\n")
+            
+                for entry in gene.bedFormat(region="introns"):
+                    intronFile.write(entry + "\n")
+                    codingIntronFile.write(entry + "\n")
+            
+            else: # noncoding transcripts just have exons and introns 
+                for entry in gene.bedFormat(region="exons"):
+                    exonFile.write(entry + "\n")
+                    noncodingExonFile.write(entry + "\n")
+            
+                for entry in gene.bedFormat(region="introns"):
+                    intronFile.write(entry + "\n")
+                    noncodingIntronFile.write(entry + "\n")
+
+        if (not genesRead % 2500):
             print "Processed %d genes..." %  genesRead
 
 print "Processed %d genes." %  genesRead
