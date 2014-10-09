@@ -49,23 +49,23 @@ class snfGene:
 
         if (region == "5utr"):
             for chunk in self.utr5:
-                returnVal.append("%s\t%d\t%d\t%s\t0\t%d\t%d\t0".expandtabs() % (chunk[0], chunk[1], chunk[2], chunk[3]+"_5utr",chunk[1],chunk[2]))
+                returnVal.append("%s\t%d\t%d\t%s\t0\t%d\t%d\t0" % (chunk[0], chunk[1], chunk[2], chunk[3]+"_5utr",chunk[1],chunk[2]))
 
         elif (region == "cds"):
             for chunk in self.cds:
-                returnVal.append("%s\t%d\t%d\t%s\t0\t%d\t%d\t0".expandtabs() % (chunk[0], chunk[1], chunk[2], chunk[3]+"_cds",chunk[1],chunk[2]))
+                returnVal.append("%s\t%d\t%d\t%s\t0\t%d\t%d\t0" % (chunk[0], chunk[1], chunk[2], chunk[3]+"_cds",chunk[1],chunk[2]))
 
         elif (region == "3utr"):
             for chunk in self.utr3:
-                returnVal.append("%s\t%d\t%d\t%s\t0\t%d\t%d\t0".expandtabs() % (chunk[0], chunk[1], chunk[2], chunk[3]+"_3utr",chunk[1],chunk[2]))
+                returnVal.append("%s\t%d\t%d\t%s\t0\t%d\t%d\t0" % (chunk[0], chunk[1], chunk[2], chunk[3]+"_3utr",chunk[1],chunk[2]))
 
         elif (region == "exons"):
             for chunk in self.exonicRegions:
-                returnVal.append("%s\t%d\t%d\t%s\t0\t%d\t%d\t0".expandtabs() % (chunk[0], chunk[1], chunk[2], chunk[3]+"_exon",chunk[1],chunk[2]))
+                returnVal.append("%s\t%d\t%d\t%s\t0\t%d\t%d\t0" % (chunk[0], chunk[1], chunk[2], chunk[3]+"_exon",chunk[1],chunk[2]))
 
         elif (region == "introns"):
             for chunk in self.intronicRegions:
-                returnVal.append("%s\t%d\t%d\t%s\t0\t%d\t%d\t0".expandtabs() % (chunk[0], chunk[1], chunk[2], chunk[3]+"_intron",chunk[1],chunk[2]))
+                returnVal.append("%s\t%d\t%d\t%s\t0\t%d\t%d\t0" % (chunk[0], chunk[1], chunk[2], chunk[3]+"_intron",chunk[1],chunk[2]))
         else:
             print "snfGene bedFormat error: currently only regions 5utr/cds/3utr/exons/introns are supported"
             

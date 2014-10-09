@@ -77,7 +77,7 @@ with open(sys.argv[1]) as knownGenesFile, open(utr5FName, "w") as utr5File, open
                 intronFile.write(entry + "\n")
                 noncodingIntronFile.write(entry + "\n")
 
-        if (not genesRead % 1000):
+        if (not genesRead % 5000):
             print "Processed %d genes..." %  genesRead
 
 print "Processed %d genes." %  genesRead
