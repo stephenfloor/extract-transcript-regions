@@ -12,6 +12,7 @@ This program takes a knownGene.txt file for some genome from the UCSC genome bro
   - exons from noncoding transcripts
   - introns from noncoding transcripts
   - 5' UTRs for coding transcripts
+  - 5' UTRs plus start codon plus +4 nucleotide for coding transcripts
   - CDS for coding transcripts
   - 3' UTRs for coding transcripts
 
@@ -25,9 +26,9 @@ Input:
   
 Output: 
 
-  nine region files in .bed format 
+  ten region files in .bed format 
   
-This is built on the snfGene class, which constructs gene objects from a knownGene file and computes metadata about the genes during parsing of the knownGene file. 
+This is built on the UCSCKnownGene class, which constructs gene objects from a knownGene file and computes metadata about the genes during parsing of the knownGene file. 
 
 Notes: 
 
