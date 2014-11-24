@@ -211,8 +211,8 @@ def createGene(knownGeneLineString):
                 if (foo.exonStarts[i] < foo.cdsStart and foo.exonEnds[i] > foo.cdsEnd):
                     foo.utr5.append((foo.chrom, foo.exonStarts[i], foo.cdsStart, foo.name))
                     foo.utr5Len += foo.cdsStart - foo.exonStarts[i]
-                    foo.utr5start.append((foo.chrom, foo.exonStarts[i], foo.cdsStart + 4, foo.name)) # add four here to include the ATG and the +4 nucleotide 
-                    foo.utr5startLen += foo.cdsStart + 4 - foo.exonStarts[i]
+                    foo.utr5start.append((foo.chrom, foo.exonStarts[i], foo.cdsStart, foo.name)) # for now just append the 5' utr exons to the utr5start 
+                    foo.utr5startLen += foo.cdsStart - foo.exonStarts[i]
                     foo.cds.append((foo.chrom, foo.cdsStart, foo.cdsEnd, foo.name))
                     foo.cdsLen += foo.cdsEnd - foo.cdsStart
                     foo.utr3.append((foo.chrom, foo.cdsEnd, foo.exonEnds[i], foo.name))
@@ -221,8 +221,8 @@ def createGene(knownGeneLineString):
                 elif (foo.exonStarts[i] < foo.cdsStart and foo.exonEnds[i] >= foo.cdsStart):
                     foo.utr5.append((foo.chrom, foo.exonStarts[i], foo.cdsStart, foo.name))
                     foo.utr5Len += foo.cdsStart - foo.exonStarts[i]
-                    foo.utr5start.append((foo.chrom, foo.exonStarts[i], foo.cdsStart + 4, foo.name)) # add four here to include the ATG and the +4 nucleotide 
-                    foo.utr5startLen += foo.cdsStart + 4 - foo.exonStarts[i]
+                    foo.utr5start.append((foo.chrom, foo.exonStarts[i], foo.cdsStart, foo.name)) 
+                    foo.utr5startLen += foo.cdsStart  - foo.exonStarts[i]
                     foo.cds.append((foo.chrom, foo.cdsStart, foo.exonEnds[i], foo.name))
                     foo.cdsLen += foo.exonEnds[i]- foo.cdsStart
                 #case 3 - exon spans CDS/3'UTR junction 
@@ -235,7 +235,7 @@ def createGene(knownGeneLineString):
                 elif (foo.exonStarts[i] < foo.cdsStart and foo.exonEnds[i] < foo.cdsStart): 
                     foo.utr5.append((foo.chrom, foo.exonStarts[i], foo.exonEnds[i], foo.name))
                     foo.utr5Len += foo.exonEnds[i] - foo.exonStarts[i]
-                    foo.utr5start.append((foo.chrom, foo.exonStarts[i], foo.exonEnds[i], foo.name)) # add four here to include the ATG and the +4 nucleotide 
+                    foo.utr5start.append((foo.chrom, foo.exonStarts[i], foo.exonEnds[i], foo.name)) 
                     foo.utr5startLen += foo.exonEnds[i] - foo.exonStarts[i]
                 #case 5 - exon is CDS only
                 elif (foo.exonStarts[i] >= foo.cdsStart and foo.exonEnds[i] <= foo.cdsEnd):
@@ -247,9 +247,8 @@ def createGene(knownGeneLineString):
                     foo.utr3Len += foo.exonEnds[i] - foo.exonStarts[i]
                 else: 
                     print "Thar be dragons - UCSCKnownGene createGene + stranded gene region parsing" 
-            #else: 
-            #    print "noncoding + strand transcript" 
-                
+
+
             # -- generate combined exonic and intronic regions -- 
             #exons are easy 
             foo.exons.append((foo.chrom, foo.exonStarts[i], foo.exonEnds[i], foo.name))
@@ -261,6 +260,21 @@ def createGene(knownGeneLineString):
                 # an intron is the region between the end of the current exon and start of the next 
                 foo.introns.append((foo.chrom, foo.exonEnds[i], foo.exonStarts[i+1], foo.name))
                 foo.intronsLen += foo.exonStarts[i+1] - foo.exonEnds[i] 
+
+        # append 27 nt of the coding sequence onto the utr5start regions by creating another block 
+        if (foo.coding):
+            added = 0 
+            index = 0
+            while(added < 27):
+                if (foo.cds[index][2] - foo.cds[index][1]) > 27 - added: 
+                    foo.utr5start.append((foo.chrom, foo.cds[index][1], foo.cds[index][1] + 27 - added, foo.name))
+                    foo.utr5startLen += 27 - added
+                    added += 27 - added 
+                else: 
+                    foo.utr5start.append((foo.chrom, foo.cds[index][1], foo.cds[index][2], foo.name))
+                    foo.utr5startLen += foo.cds[index][2] - foo.cds[index][1]
+                    added += foo.cds[index][2] - foo.cds[index][1]
+                    index += 1
 
     elif (foo.strand == "-"):
      #uc001ach.2	    chr1    -	    910578  917473  911551  916546  5	    910578,911878,914260,916516,917444,	    911649,912004,916037,916553,917473,	    Q5SV97  uc001ach.2
@@ -284,8 +298,8 @@ def createGene(knownGeneLineString):
                     foo.cdsLen += foo.cdsEnd - foo.cdsStart
                     foo.utr5.append((foo.chrom, foo.cdsEnd, foo.exonEnds[i], foo.name))
                     foo.utr5Len += foo.exonEnds[i] - foo.cdsEnd
-                    foo.utr5start.append((foo.chrom, foo.cdsEnd - 4 , foo.exonEnds[i], foo.name))
-                    foo.utr5startLen += foo.exonEnds[i] - (foo.cdsEnd - 4)
+                    foo.utr5start.append((foo.chrom, foo.cdsEnd, foo.exonEnds[i], foo.name))
+                    foo.utr5startLen += foo.exonEnds[i] - (foo.cdsEnd)
                 #case 2 - exon spans 3' UTR/CDS junction
                 elif (foo.exonStarts[i] < foo.cdsStart and foo.exonEnds[i] >= foo.cdsStart):
                     foo.utr3.append((foo.chrom, foo.exonStarts[i], foo.cdsStart, foo.name))
@@ -298,8 +312,8 @@ def createGene(knownGeneLineString):
                     foo.cdsLen += foo.cdsEnd - foo.exonStarts[i]
                     foo.utr5.append((foo.chrom, foo.cdsEnd, foo.exonEnds[i], foo.name))
                     foo.utr5Len += foo.exonEnds[i] - foo.cdsEnd
-                    foo.utr5start.append((foo.chrom, foo.cdsEnd - 4 , foo.exonEnds[i], foo.name))
-                    foo.utr5startLen += foo.exonEnds[i] - (foo.cdsEnd - 4)
+                    foo.utr5start.append((foo.chrom, foo.cdsEnd, foo.exonEnds[i], foo.name))
+                    foo.utr5startLen += foo.exonEnds[i] - (foo.cdsEnd)
                 #case 4 - exon is 3' UTR only 
                 elif (foo.exonStarts[i] < foo.cdsStart and foo.exonEnds[i] < foo.cdsStart): 
                     foo.utr3.append((foo.chrom, foo.exonStarts[i], foo.exonEnds[i], foo.name))
@@ -320,6 +334,7 @@ def createGene(knownGeneLineString):
             #else: 
             #    print "- strand noncoding transcript"
                 
+
             # -- generate combined exonic and intronic regions -- 
             #exons are easy 
             foo.exons.append((foo.chrom, foo.exonStarts[i], foo.exonEnds[i], foo.name))
@@ -330,6 +345,26 @@ def createGene(knownGeneLineString):
                 foo.introns.append((foo.chrom, foo.exonEnds[i], foo.exonStarts[i+1], foo.name))
                 foo.intronsLen += foo.exonStarts[i+1] - foo.exonEnds[i] 
                 
+        # append 27 nt of the coding sequence onto the utr5start regions by creating another block 
+        if (foo.coding): 
+            added = 0 
+            index = -1
+
+            while(added < 27):  #cdsEnd is the start, and the last exon is the first exon of the cds 
+                #print foo.cds
+                #print foo.cds[index]
+                
+            # need to insert at the beginning here and not append
+
+                if (foo.cds[index][2] - foo.cds[index][1]) > 27 - added: 
+                    foo.utr5start.insert(0,(foo.chrom, foo.cds[index][2] - (27 - added), foo.cds[index][2], foo.name))
+                    foo.utr5startLen += 27 - added 
+                    added += 27 - added
+                else: 
+                    foo.utr5start.insert(0,(foo.chrom, foo.cds[index][1], foo.cds[index][2], foo.name))
+                    foo.utr5startLen += foo.cds[index][2] - foo.cds[index][1]
+                    added += foo.cds[index][2] - foo.cds[index][1]
+                    index -= 1
     else:
         print "Thar be dragons - UCSCKnownGene createGene strand does not match + or -"
 	
