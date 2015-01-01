@@ -8,6 +8,7 @@
 
 # convert UCSC gene names to refseq?
 # add a region type which is mrna that contains the whole spliced transcript, and preserve cdsStart and cdsEnd for these.  - this is the same as codingExons, just need to preserve start/stop
+# remove pandas from GTF.py 
 
 import sys, os, argparse
 
@@ -18,10 +19,10 @@ from collections import defaultdict
 #from UCSCKnownGene import *
 from Transcript import *
 
-print " ---------------------------------"
-print "| Extract Regions from knownGenes |"
-print "|  snf   7 October 2014           |"
-print " ---------------------------------\n\n"
+print " ----------------------------------"
+print "| Extract Regions from annotations |"
+print "|  snf        Fall 2014            |"
+print " ----------------------------------\n\n"
 
 
 # ------ ARGUMENT PARSING ----------
