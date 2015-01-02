@@ -10,12 +10,13 @@ Read GFF/GTF files. Works with gzip compressed files and pandas.
 
 Downloaded by SNF on 12/30/14 from https://gist.github.com/slowkow/8101481
 
+ - pandas support removed to minimize package requirements 
+
 """
 
 
 from collections import defaultdict
 import gzip
-import pandas as pd
 import re
 
 
@@ -24,27 +25,6 @@ GTF_HEADER  = ['seqname', 'source', 'feature', 'start', 'end', 'score',
 R_SEMICOLON = re.compile(r'\s*;\s*')
 R_COMMA     = re.compile(r'\s*,\s*')
 R_KEYVALUE  = re.compile(r'(\s+|\s*=\s*)')
-
-
-def dataframe(filename):
-    """Open an optionally gzipped GTF file and return a pandas.DataFrame.
-    """
-    # Each column is a list stored as a value in this dict.
-    result = defaultdict(list)
-
-    for i, line in enumerate(lines(filename)):
-        for key in line.keys():
-            # This key has not been seen yet, so set it to None for all
-            # previous lines.
-            if key not in result:
-                result[key] = [None] * i
-
-        # Ensure this row has some value for each column.
-        for key in result.keys():
-            result[key].append(line.get(key, None))
-
-    return pd.DataFrame(result)
-
 
 def lines(filename):
     """Open an optionally gzipped GTF file and generate a dict for each line.
