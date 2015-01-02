@@ -159,7 +159,8 @@ with open(utr5FName, "w") as utr5File, open(utr5StartFName, "w") as utr5StartFil
                 print "Processed %d lines..." %  genesRead
 
         print "Dictionary built." 
-
+        genesRead = 0
+        
         # now create a SNFGene object for each transcript and output it 
 
         for key in txDict: 
