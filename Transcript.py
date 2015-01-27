@@ -425,26 +425,27 @@ def createGTFTranscript(gtfLines):
         
         # ensembl GTFs have special lines where feature = "transcript" and feature = "CDS" that define the transcript and CDS start/ends, respectively 
     
-        # GTF files are closed intervals while BED are right-open-left-closed, so need to add one to all the end coordinates 
+        # GTF files are closed intervals while BED are right-open-left-closed, so --- 
+        #   need to subtract one from all start coordinates? seems counterintuitive maybe the input genome.fa is zero based? 
 
         if (dict["feature"] == "transcript"):
             if (foo.txStart == 0 or int(dict["start"]) < foo.txStart):
-                foo.txStart = int(dict["start"])
+                foo.txStart = int(dict["start"]) - 1
             if (foo.txEnd == 0 or int(dict["end"]) > foo.txEnd):
-                foo.txEnd = int(dict["end"]) + 1 
+                foo.txEnd = int(dict["end"])
 
 
         if (dict["feature"] == "CDS"):
             if (foo.cdsStart == 0 or int(dict["start"]) < foo.cdsStart):
-                foo.cdsStart = int(dict["start"])
+                foo.cdsStart = int(dict["start"]) - 1
             if (foo.cdsEnd== 0 or int(dict["end"]) > foo.cdsEnd):
-                foo.cdsEnd = int(dict["end"]) + 1 
+                foo.cdsEnd = int(dict["end"]) 
             
         if (dict["feature"] == "exon"):
             foo.exonCt += 1
 
-            foo.exonStarts.append(int(dict["start"]))
-            foo.exonEnds.append(int(dict["end"]) + 1)
+            foo.exonStarts.append(int(dict["start"]) - 1)
+            foo.exonEnds.append(int(dict["end"]))
 
     foo.computeMetadata() 
 
