@@ -4,17 +4,12 @@
 # 7 October 2014
 # floor@berkeley.edu
 
-# TODO:
-
-# extract to biotype-specific files 
-
 import sys, os, argparse
 
 import GTF
 
 from collections import defaultdict 
 
-#from UCSCKnownGene import *
 from Transcript import *
 
 print " ----------------------------------"
@@ -128,7 +123,7 @@ with open(utr5FName, "w") as utr5File, open(utr5StartFName, "w") as utr5StartFil
         with open(args.input, "r") as genesFile: 
         
             for line in genesFile:
-                # all of the knowngenes parsing and metadata construction is done inside UCSCKnownGene.py, especially the createGene method
+                # all of the knowngenes parsing and metadata construction is done inside Transcript.py, especially the createGene method
 
                 gene = createUCSCTranscript(line) 
                 genesRead += 1
@@ -147,19 +142,21 @@ with open(utr5FName, "w") as utr5File, open(utr5StartFName, "w") as utr5StartFil
 
         print "Building GTF dictionary..." 
 
-        # the issue here is that lines for various transcripts may be interleaved, so can either create lots of SNFGene objects, or a giant dict. opted for giant dict. 
+        # the issue here is that lines for various transcripts may be interleaved, so can either create lots of objects, or a giant dict. opted for giant dict. 
         for line in GTF.lines(args.input): 
 
             txDict[line["transcript_id"]].append(line)
             genesRead += 1
 
             if (not genesRead % 25000):
-                print "Processed %d lines..." %  genesRead
+                print "\tProcessed %d lines..." %  genesRead
 
         print "Dictionary built." 
+
+        print "Writing transcript properties."
         genesRead = 0
         
-        # now create a SNFGene object for each transcript and output it 
+        # now create a Transcript object for each transcript and output it 
 
         for key in txDict: 
 
@@ -172,10 +169,8 @@ with open(utr5FName, "w") as utr5File, open(utr5StartFName, "w") as utr5StartFil
             genesRead += 1
             
             if (not genesRead % 2500):
-                print "Processed %d entries..." %  genesRead
+                print "\tProcessed %d entries..." %  genesRead
 
-
-        sys.exit() 
 
 print "Processed %d entries." %  genesRead
 
