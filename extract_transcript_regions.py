@@ -144,12 +144,13 @@ with open(utr5FName, "w") as utr5File, open(utr5StartFName, "w") as utr5StartFil
 
         # the issue here is that lines for various transcripts may be interleaved, so can either create lots of objects, or a giant dict. opted for giant dict. 
         for line in GTF.lines(args.input): 
+            # only want to read in lines corresponding to these features
+            if line["feature"] in ["exon", "CDS", "start_codon", "stop_codon"]:
+                txDict[line["transcript_id"]].append(line)
+                genesRead += 1
 
-            txDict[line["transcript_id"]].append(line)
-            genesRead += 1
-
-            if (not genesRead % 25000):
-                print "\tProcessed %d lines..." %  genesRead
+                if (not genesRead % 25000):
+                    print "\tProcessed %d lines..." %  genesRead
 
         print "Dictionary built." 
 
