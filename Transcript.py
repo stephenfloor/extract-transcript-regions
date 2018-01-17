@@ -255,7 +255,7 @@ class Transcript:
             #	name		chrom	strand	txStart txEnd	cdsStart self.cdsEnd exonCt	exonStarts		exonEnds		proteinID  alignID 
             # for the minus strand everything is the same except the order of encountering regions is reversed
             # i.e. 3' UTR -> CDS -> 5' UTR 
-
+            
             for i in range (self.exonCt): 
             #print ("DBUG - exonCt %d i %d self.exonEnds[i] %d self.cdsStart %d exonStarts[i] %d self.cdsEnd %d") % \
                 #    (self.exonCt, i, self.exonEnds[i], self.cdsStart, self.exonStarts[i], self.cdsEnd)
@@ -446,6 +446,9 @@ def createGTFTranscript(gtfLines):
 
             foo.exonStarts.append(int(dict["start"]) - 1)
             foo.exonEnds.append(int(dict["end"]))
+
+    foo.exonStarts = sorted(foo.exonStarts)
+    foo.exonEnds = sorted(foo.exonEnds) 
 
     foo.computeMetadata() 
 
