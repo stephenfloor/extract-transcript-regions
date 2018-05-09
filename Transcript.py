@@ -54,7 +54,7 @@ class Transcript:
                 returnVal.append("%s\t%d\t%d\t%s\t0\t%c\t%d\t%d\t0" % (chunk[0], chunk[1], chunk[2], chunk[3]+"_5utr",self.strand, chunk[1],chunk[2]))
 
         elif (region == "5utr_start"):
-            for chunk in self.utr5_start:
+            for chunk in self.utr5start:
                 returnVal.append("%s\t%d\t%d\t%s\t0\t%c\t%d\t%d\t0" % (chunk[0], chunk[1], chunk[2], chunk[3]+"_5utr_start",self.strand, chunk[1],chunk[2]))
 
         elif (region == "cds"):
