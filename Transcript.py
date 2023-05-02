@@ -44,7 +44,7 @@ class Transcript:
 #this function returns a list of BED-formatted strings for the feature passed as region with multiple entries per region possible, one for each primitive (exon/intron) 
     def bedFormat(self, region="exons"):
         if (not self.coding and (region == "5utr" or region == "cds" or region == "3utr")):
-            print "Transcript.py bedFormat error: noncoding transcripts do not have 5utr/cds/3utr"
+            print( "Transcript.py bedFormat error: noncoding transcripts do not have 5utr/cds/3utr")
             return []
 
         returnVal = []
@@ -73,7 +73,7 @@ class Transcript:
             for chunk in self.introns:
                 returnVal.append("%s\t%d\t%d\t%s\t0\t%c\t%d\t%d\t0" % (chunk[0], chunk[1], chunk[2], chunk[3]+"_intron",self.strand, chunk[1],chunk[2]))
         else:
-            print "Transcript.py bedFormat error: currently only regions 5utr/cds/3utr/exons/introns are supported"
+            print( "Transcript.py bedFormat error: currently only regions 5utr/cds/3utr/exons/introns are supported")
             
 
         return returnVal
@@ -88,7 +88,7 @@ class Transcript:
 #this function returns a BED-formatted string for the feature passed as region with blocks defining the exons as per the BED file format 
     def blockBedFormat(self, region="exons"):
         if (not self.coding and (region == "5utr" or region == "cds" or region == "3utr")):
-            print "Transcript.py blockBedFormat error: noncoding transcripts do not have 5utr/cds/3utr"
+            print ("Transcript.py blockBedFormat error: noncoding transcripts do not have 5utr/cds/3utr")
             return ""
 
         returnVal = ""
@@ -157,7 +157,7 @@ class Transcript:
 
             #print "blockCount %d blockSizes %s blockStarts %s" % (blockCount, blockSizes,  blockStarts)
         else:
-            print "UCSCKnownGene blockBedFormat error: currently only regions 5utr/cds/3utr/exons/introns are supported"
+            print ("UCSCKnownGene blockBedFormat error: currently only regions 5utr/cds/3utr/exons/introns are supported")
             
         returnVal = "%s\t%d\t%d\t%s\t%d\t%c\t%d\t%d\t%s\t%d\t%s\t%s" % (self.chrom, chromStart, chromEnd, regionName, score, self.strand, chromStart, chromEnd, rgb, blockCount, blockSizes, blockStarts)
 
@@ -214,7 +214,7 @@ class Transcript:
                         self.utr3.append((self.chrom, self.exonStarts[i], self.exonEnds[i], self.name))
                         self.utr3Len += self.exonEnds[i] - self.exonStarts[i]
                     else: 
-                        print "Thar be dragons - Transcript computeMetadata + stranded gene region parsing" 
+                        print ("Thar be dragons - Transcript computeMetadata + stranded gene region parsing" )
 
 
             # -- generate combined exonic and intronic regions -- 
@@ -303,7 +303,7 @@ class Transcript:
                         self.utr5start.append((self.chrom, self.exonStarts[i] , self.exonEnds[i], self.name))
                         self.utr5startLen += self.exonEnds[i] - self.exonStarts[i]
                     else: 
-                        print "Thar be dragons - Transcript computeMetadata - stranded gene region parsing" 
+                        print( "Thar be dragons - Transcript computeMetadata - stranded gene region parsing" )
                     
             #else: 
             #    print "- strand noncoding transcript"
@@ -346,7 +346,7 @@ class Transcript:
                     self.utr5start = []
                         
         else:
-            print "Thar be dragons - Transcript computeMetadata strand does not match + or -"
+            print( "Thar be dragons - Transcript computeMetadata strand does not match + or -")
         
 
 #example line format from knownGenes file (from UCSC) 

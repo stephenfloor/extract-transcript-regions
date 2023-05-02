@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 # Stephen N. Floor
-# 7 October 2014
-# floor@berkeley.edu
+# October 2014
+# updated April 2023 for python3 
+# stephen@floorlab.org
 
 import sys, os, argparse
 
@@ -12,10 +13,10 @@ from collections import defaultdict
 
 from Transcript import *
 
-print " ----------------------------------"
-print "| Extract Regions from annotations |"
-print "|  snf        Fall 2014            |"
-print " ----------------------------------\n\n"
+print(" ----------------------------------")
+print("| Extract Regions from annotations |")
+print("|  snf        Fall 2014            |")
+print(" ----------------------------------\n\n")
 
 
 # ------ ARGUMENT PARSING ----------
@@ -130,8 +131,8 @@ with open(utr5FName, "w") as utr5File, open(utr5StartFName, "w") as utr5StartFil
 
                 writeOutput(gene)
 
-                if (not genesRead % 2500):
-                    print "Processed %d entries..." %  genesRead
+                if (not genesRead % 25000):
+                    print("Processed %d entries..." %  genesRead)
 
                 
     elif (args.gtf): 
@@ -140,7 +141,7 @@ with open(utr5FName, "w") as utr5File, open(utr5StartFName, "w") as utr5StartFil
 
         txDict = defaultdict(list) 
 
-        print "Building GTF dictionary..." 
+        print("Building GTF dictionary...")
 
         # the issue here is that lines for various transcripts may be interleaved, so can either create lots of objects, or a giant dict. opted for giant dict. 
         for line in GTF.lines(args.input): 
@@ -149,12 +150,12 @@ with open(utr5FName, "w") as utr5File, open(utr5StartFName, "w") as utr5StartFil
                 txDict[line["transcript_id"]].append(line)
                 genesRead += 1
 
-                if (not genesRead % 25000):
-                    print "\tProcessed %d lines..." %  genesRead
+                if (not genesRead % 100000):
+                    print( "\tProcessed %d lines..." %  genesRead)
 
-        print "Dictionary built." 
+        print( "Dictionary built." )
 
-        print "Writing transcript properties."
+        print ("Writing transcript properties.")
         genesRead = 0
         
         # now create a Transcript object for each transcript and output it 
@@ -169,10 +170,10 @@ with open(utr5FName, "w") as utr5File, open(utr5StartFName, "w") as utr5StartFil
             writeOutput(tx)
             genesRead += 1
             
-            if (not genesRead % 2500):
-                print "\tProcessed %d entries..." %  genesRead
+            if (not genesRead % 25000):
+                print ("\tProcessed %d entries..." %  genesRead)
 
 
-print "Processed %d entries." %  genesRead
+print ("Processed %d entries." %  genesRead)
 
 

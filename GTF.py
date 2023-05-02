@@ -31,7 +31,7 @@ def lines(filename):
     """
     fn_open = gzip.open if filename.endswith('.gz') else open
 
-    with fn_open(filename) as fh:
+    with fn_open(filename, mode='rt') as fh:
         for line in fh:
             if line.startswith('#'):
                 continue
